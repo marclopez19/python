@@ -12,19 +12,24 @@ def mostrar_menu():
     print("----------------")
 
 def comptar_línies(fitxer):
+    fitxer.seek(0)  # Reinicia el cursor al principi del fitxer
     línies = fitxer.readlines()
+    fitxer.seek(0)
     return len(línies)
+
 
 def comptar_paraules(fitxer):
     fitxer.seek(0)  # Reinicia el cursor al principi del fitxer
     contingut = fitxer.read()
     paraules = contingut.split()
+    fitxer.seek(0)
     return len(paraules)
 
 def comptar_lletres(fitxer):
     fitxer.seek(0)  # Reinicia el cursor al principi del fitxer
     contingut = fitxer.read()
     lletres = [caracter for caracter in contingut if caracter.isalpha()]
+    fitxer.seek(0)
     return len(lletres)
 
 def analitzar_fitxer(nom_fitxer):
@@ -33,12 +38,13 @@ def analitzar_fitxer(nom_fitxer):
         fitxer_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), nom_fitxer)
         fitxer = open(fitxer_path, "r")
     except FileNotFoundError:
-        print("Error: El fitxer no existeix.")
+        print(f"Error: El fitxer {nom_fitxer} no existeix.")
         return None
     else:
         print(f"Fitxer obert correctament: {fitxer.name}")
         print("Contingut del fitxer:")
-        print(fitxer.read())  # Mostra el contingut del fitxer
+        contingut = fitxer.read()
+        print(contingut)  # Mostra el contingut del fitxer
         fitxer.seek(0)  # Reinicia el cursor al principi per permetre la lectura posterior
         return fitxer
 
@@ -59,12 +65,15 @@ def principal():
             elif opcio == 1:
                 línies = comptar_línies(fitxer)
                 print(f"El fitxer té {línies} línies.")
+                print(fitxer.read())
             elif opcio == 2:
                 paraules = comptar_paraules(fitxer)
                 print(f"El fitxer té {paraules} paraules.")
+                print(fitxer.read())                
             elif opcio == 3:
                 lletres = comptar_lletres(fitxer)
                 print(f"El fitxer té {lletres} lletres.")
+                print(fitxer.read())
             else:
                 print("Error: Opció no vàlida. Torna-ho a intentar.")
         except ValueError:
